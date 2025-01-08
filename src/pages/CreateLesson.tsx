@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Link } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -12,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
+import Navigation from "@/components/Navigation";
 
 const CreateLesson = () => {
   const { toast } = useToast();
@@ -26,14 +26,7 @@ const CreateLesson = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="w-full border-b">
-        <div className="container py-4">
-          <Link to="/" className="text-2xl font-bold hover:text-primary transition-colors">
-            Lesson Link
-          </Link>
-        </div>
-      </div>
-      
+      <Navigation />
       <div className="container py-8">
         <h1 className="text-4xl font-bold mb-8">Create a Lesson</h1>
         
