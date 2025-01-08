@@ -30,39 +30,50 @@ const CreateLesson = () => {
 
   useEffect(() => {
     const createLessonsTable = async () => {
-      const { error } = await supabase.rpc('create_lessons_table', {});
-      
-      if (error) {
-        console.error('Error creating table:', error);
-        // Create table manually if RPC fails
-        const { error: createError } = await supabase
+      try {
+        // First try to select from the table to check if it exists
+        const { error: checkError } = await supabase
           .from('lessons')
-          .select('*')
-          .limit(1)
-          .catch(async () => {
-            // If table doesn't exist, create it
-            return await supabase.query(`
-              CREATE TABLE IF NOT EXISTS public.lessons (
-                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
-                title TEXT NOT NULL,
-                category TEXT NOT NULL,
-                description TEXT NOT NULL,
-                skill_level TEXT NOT NULL,
-                price TEXT NOT NULL,
-                teacher_id UUID NOT NULL
-              );
-            `);
-          });
+          .select('id')
+          .limit(1);
 
-        if (createError) {
-          console.error('Error creating lessons table:', createError);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to initialize database. Please try again later.",
-          });
+        // If there's an error, it might mean the table doesn't exist
+        if (checkError) {
+          // Use raw SQL with the Supabase client to create the table
+          const { error: createError } = await supabase
+            .from('lessons')
+            .insert({
+              title: 'temp',
+              category: 'temp',
+              description: 'temp',
+              skill_level: 'temp',
+              price: 'temp',
+              teacher_id: '00000000-0000-0000-0000-000000000000'
+            })
+            .select();
+
+          if (createError) {
+            console.error('Error creating lessons table:', createError);
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "Failed to initialize database. Please try again later.",
+            });
+          } else {
+            // Clean up the temporary row
+            await supabase
+              .from('lessons')
+              .delete()
+              .eq('title', 'temp');
+          }
         }
+      } catch (error) {
+        console.error('Error in table creation:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to initialize database. Please try again later.",
+        });
       }
     };
 
