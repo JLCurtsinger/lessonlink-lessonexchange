@@ -5,6 +5,7 @@ import { LessonCard, type Lesson } from "@/components/LessonCard";
 import Navigation from "@/components/Navigation";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { initializeDatabase } from "@/utils/databaseInit";
 
 const Browse = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -12,7 +13,11 @@ const Browse = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchLessons();
+    const init = async () => {
+      await initializeDatabase();
+      fetchLessons();
+    };
+    init();
   }, []);
 
   const fetchLessons = async () => {
@@ -23,7 +28,6 @@ const Browse = () => {
 
       if (error) throw error;
 
-      // Transform the data to match the Lesson type
       const formattedLessons = (lessonsData || []).map(lesson => ({
         id: lesson.id,
         title: lesson.title,
@@ -31,7 +35,7 @@ const Browse = () => {
         skillLevel: lesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
         price: lesson.price,
         description: lesson.description,
-        teacherName: 'Anonymous Teacher' // Default value since we can't fetch profiles yet
+        teacherName: 'Anonymous Teacher'
       }));
 
       setLessons(formattedLessons);
