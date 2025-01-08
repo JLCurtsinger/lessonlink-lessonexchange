@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import Navigation from "@/components/Navigation";
 import { supabase } from "@/lib/supabase";
 import { LessonForm } from "@/components/LessonForm";
 import { initializeDatabase } from "@/utils/databaseInit";
@@ -66,7 +65,6 @@ const CreateLesson = () => {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <div className="container py-8">
         <h1 className="text-4xl font-bold mb-8">Create a Lesson</h1>
         
