@@ -10,7 +10,7 @@ export const Hero = () => {
       <div className="text-center max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-float">
           <span className="block text-primary">Learn. Teach.</span>
-          <span className="block bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <span className="block bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] bg-clip-text text-transparent">
             Exchange Knowledge.
           </span>
         </h1>
