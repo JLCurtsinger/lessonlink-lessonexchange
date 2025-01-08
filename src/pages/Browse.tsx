@@ -6,6 +6,10 @@ import Navigation from "@/components/Navigation";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 
+interface Profile {
+  full_name: string;
+}
+
 const Browse = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +45,7 @@ const Browse = () => {
         skillLevel: lesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
         price: lesson.price,
         description: lesson.description,
-        teacherName: lesson.profiles.full_name || 'Anonymous Teacher'
+        teacherName: (lesson.profiles as Profile)?.full_name || 'Anonymous Teacher'
       }));
 
       setLessons(formattedLessons);
