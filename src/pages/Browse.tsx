@@ -10,6 +10,17 @@ interface Profile {
   full_name: string;
 }
 
+interface LessonWithProfile {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  skill_level: string;
+  price: string;
+  teacher_id: string;
+  profiles: Profile;
+}
+
 const Browse = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,14 +49,14 @@ const Browse = () => {
 
       if (error) throw error;
 
-      const formattedLessons = lessonsData.map(lesson => ({
+      const formattedLessons = (lessonsData as LessonWithProfile[]).map(lesson => ({
         id: lesson.id,
         title: lesson.title,
         category: lesson.category,
         skillLevel: lesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
         price: lesson.price,
         description: lesson.description,
-        teacherName: (lesson.profiles as Profile)?.full_name || 'Anonymous Teacher'
+        teacherName: lesson.profiles?.full_name || 'Anonymous Teacher'
       }));
 
       setLessons(formattedLessons);
