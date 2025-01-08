@@ -35,16 +35,8 @@ const Browse = () => {
       const { data: lessonsData, error } = await supabase
         .from('lessons')
         .select(`
-          id,
-          title,
-          description,
-          category,
-          skill_level,
-          price,
-          teacher_id,
-          profiles:teacher_id (
-            full_name
-          )
+          *,
+          profiles (full_name)
         `);
 
       if (error) throw error;
