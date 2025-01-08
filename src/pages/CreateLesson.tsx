@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,6 +27,47 @@ const CreateLesson = () => {
     skillLevel: "",
     price: "",
   });
+
+  useEffect(() => {
+    const createLessonsTable = async () => {
+      const { error } = await supabase.rpc('create_lessons_table', {});
+      
+      if (error) {
+        console.error('Error creating table:', error);
+        // Create table manually if RPC fails
+        const { error: createError } = await supabase
+          .from('lessons')
+          .select('*')
+          .limit(1)
+          .catch(async () => {
+            // If table doesn't exist, create it
+            return await supabase.query(`
+              CREATE TABLE IF NOT EXISTS public.lessons (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+                title TEXT NOT NULL,
+                category TEXT NOT NULL,
+                description TEXT NOT NULL,
+                skill_level TEXT NOT NULL,
+                price TEXT NOT NULL,
+                teacher_id UUID NOT NULL
+              );
+            `);
+          });
+
+        if (createError) {
+          console.error('Error creating lessons table:', createError);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to initialize database. Please try again later.",
+          });
+        }
+      }
+    };
+
+    createLessonsTable();
+  }, [toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
