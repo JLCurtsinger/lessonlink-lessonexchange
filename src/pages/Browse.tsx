@@ -6,21 +6,6 @@ import Navigation from "@/components/Navigation";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 
-interface Profile {
-  full_name: string;
-}
-
-interface LessonWithProfile {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  skill_level: string;
-  price: string;
-  teacher_id: string;
-  profiles: Profile;
-}
-
 const Browse = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,26 +19,20 @@ const Browse = () => {
     try {
       const { data: lessonsData, error } = await supabase
         .from('lessons')
-        .select(`
-          *,
-          profiles (full_name)
-        `);
+        .select('*');
 
       if (error) throw error;
 
-      // Type assertion and data transformation
-      const formattedLessons = (lessonsData || []).map(lesson => {
-        const typedLesson = lesson as unknown as LessonWithProfile;
-        return {
-          id: typedLesson.id,
-          title: typedLesson.title,
-          category: typedLesson.category,
-          skillLevel: typedLesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
-          price: typedLesson.price,
-          description: typedLesson.description,
-          teacherName: typedLesson.profiles?.full_name || 'Anonymous Teacher'
-        };
-      });
+      // Transform the data to match the Lesson type
+      const formattedLessons = (lessonsData || []).map(lesson => ({
+        id: lesson.id,
+        title: lesson.title,
+        category: lesson.category,
+        skillLevel: lesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
+        price: lesson.price,
+        description: lesson.description,
+        teacherName: 'Anonymous Teacher' // Default value since we can't fetch profiles yet
+      }));
 
       setLessons(formattedLessons);
     } catch (error) {
