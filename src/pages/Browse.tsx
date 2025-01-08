@@ -49,15 +49,19 @@ const Browse = () => {
 
       if (error) throw error;
 
-      const formattedLessons = (lessonsData as LessonWithProfile[]).map(lesson => ({
-        id: lesson.id,
-        title: lesson.title,
-        category: lesson.category,
-        skillLevel: lesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
-        price: lesson.price,
-        description: lesson.description,
-        teacherName: lesson.profiles?.full_name || 'Anonymous Teacher'
-      }));
+      // Type assertion and data transformation
+      const formattedLessons = (lessonsData || []).map(lesson => {
+        const typedLesson = lesson as unknown as LessonWithProfile;
+        return {
+          id: typedLesson.id,
+          title: typedLesson.title,
+          category: typedLesson.category,
+          skillLevel: typedLesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
+          price: typedLesson.price,
+          description: typedLesson.description,
+          teacherName: typedLesson.profiles?.full_name || 'Anonymous Teacher'
+        };
+      });
 
       setLessons(formattedLessons);
     } catch (error) {
