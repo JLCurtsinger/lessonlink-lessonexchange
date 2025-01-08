@@ -14,8 +14,10 @@ const Browse = () => {
 
   useEffect(() => {
     const init = async () => {
-      await initializeDatabase();
-      fetchLessons();
+      const initialized = await initializeDatabase();
+      if (initialized) {
+        fetchLessons();
+      }
     };
     init();
   }, []);
