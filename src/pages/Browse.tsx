@@ -1,39 +1,62 @@
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LessonCard, type Lesson } from "@/components/LessonCard";
 import Navigation from "@/components/Navigation";
-
-const SAMPLE_LESSONS: Lesson[] = [
-  {
-    id: "1",
-    title: "Introduction to Spanish",
-    category: "Languages",
-    skillLevel: "Beginner",
-    price: "Free",
-    description: "Learn basic Spanish conversation skills with a native speaker.",
-    teacherName: "Maria Rodriguez"
-  },
-  {
-    id: "2",
-    title: "Guitar for Beginners",
-    category: "Music",
-    skillLevel: "Beginner",
-    price: "0.001 ETH",
-    description: "Master the basics of guitar playing with personalized feedback.",
-    teacherName: "John Smith"
-  },
-  {
-    id: "3",
-    title: "Advanced Python Programming",
-    category: "Programming",
-    skillLevel: "Advanced",
-    price: "Barter",
-    description: "Deep dive into Python with focus on AI and machine learning applications.",
-    teacherName: "Alex Chen"
-  }
-];
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
 
 const Browse = () => {
+  const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchLessons();
+  }, []);
+
+  const fetchLessons = async () => {
+    try {
+      const { data: lessonsData, error } = await supabase
+        .from('lessons')
+        .select(`
+          id,
+          title,
+          description,
+          category,
+          skill_level,
+          price,
+          teacher_id,
+          profiles:teacher_id (
+            full_name
+          )
+        `);
+
+      if (error) throw error;
+
+      const formattedLessons = lessonsData.map(lesson => ({
+        id: lesson.id,
+        title: lesson.title,
+        category: lesson.category,
+        skillLevel: lesson.skill_level as "Beginner" | "Intermediate" | "Advanced",
+        price: lesson.price,
+        description: lesson.description,
+        teacherName: lesson.profiles.full_name || 'Anonymous Teacher'
+      }));
+
+      setLessons(formattedLessons);
+    } catch (error) {
+      console.error('Error fetching lessons:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load lessons. Please try again later.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -69,11 +92,17 @@ const Browse = () => {
           </Select>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SAMPLE_LESSONS.map((lesson) => (
-            <LessonCard key={lesson.id} lesson={lesson} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-8">Loading lessons...</div>
+        ) : lessons.length === 0 ? (
+          <div className="text-center py-8">No lessons found.</div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {lessons.map((lesson) => (
+              <LessonCard key={lesson.id} lesson={lesson} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
