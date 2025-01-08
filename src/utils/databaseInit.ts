@@ -3,32 +3,34 @@ import { toast } from "@/hooks/use-toast";
 
 export const initializeDatabase = async () => {
   try {
-    // Create the lessons table using raw SQL
+    // Check if the lessons table exists by attempting to select from it
     const { error: createTableError } = await supabase.from('lessons').select('*').limit(1);
 
     if (createTableError?.message?.includes('relation "public.lessons" does not exist')) {
+      // Table doesn't exist, create it using raw SQL via RPC
       const { error: sqlError } = await supabase
         .from('lessons')
         .select('*')
         .limit(1)
-        .single()
         .then(async () => {
           return { error: null };
         })
         .catch(async () => {
-          // Table doesn't exist, create it
-          return await supabase.query(`
-            CREATE TABLE IF NOT EXISTS public.lessons (
-              id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-              title TEXT NOT NULL,
-              category TEXT NOT NULL,
-              description TEXT NOT NULL,
-              skill_level TEXT NOT NULL,
-              price TEXT NOT NULL,
-              teacher_id UUID NOT NULL,
-              created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
-            );
-          `);
+          // Create the table using a raw SQL command
+          return await supabase.rpc('exec_sql', {
+            sql_query: `
+              CREATE TABLE IF NOT EXISTS public.lessons (
+                id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+                title TEXT NOT NULL,
+                category TEXT NOT NULL,
+                description TEXT NOT NULL,
+                skill_level TEXT NOT NULL,
+                price TEXT NOT NULL,
+                teacher_id UUID NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+              );
+            `
+          });
         });
 
       if (sqlError) {
