@@ -12,7 +12,7 @@ export const Hero = () => {
           Learn. Teach. Exchange Knowledge.
         </h1>
         <p className="text-xl text-gray-600 mb-8">
-          A global platform for skill-sharing—join for free or in exchange for crypto.
+          A global platform for sharing knowledge
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Button
