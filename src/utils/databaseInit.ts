@@ -8,30 +8,26 @@ export const initializeDatabase = async () => {
 
     if (createTableError?.message?.includes('relation "public.lessons" does not exist')) {
       // Table doesn't exist, create it using raw SQL via RPC
-      const { error: sqlError } = await supabase
-        .from('lessons')
-        .select('*')
-        .limit(1)
-        .then(async () => {
-          return { error: null };
-        })
-        .catch(async () => {
-          // Create the table using a raw SQL command
-          return await supabase.rpc('exec_sql', {
-            sql_query: `
-              CREATE TABLE IF NOT EXISTS public.lessons (
-                id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-                title TEXT NOT NULL,
-                category TEXT NOT NULL,
-                description TEXT NOT NULL,
-                skill_level TEXT NOT NULL,
-                price TEXT NOT NULL,
-                teacher_id UUID NOT NULL,
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
-              );
-            `
-          });
+      let sqlError = null;
+      try {
+        await supabase.from('lessons').select('*').limit(1);
+      } catch {
+        const result = await supabase.rpc('exec_sql', {
+          sql_query: `
+            CREATE TABLE IF NOT EXISTS public.lessons (
+              id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+              title TEXT NOT NULL,
+              category TEXT NOT NULL,
+              description TEXT NOT NULL,
+              skill_level TEXT NOT NULL,
+              price TEXT NOT NULL,
+              teacher_id UUID NOT NULL,
+              created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+            );
+          `
         });
+        sqlError = result.error;
+      }
 
       if (sqlError) {
         console.error('Error creating table:', sqlError);
