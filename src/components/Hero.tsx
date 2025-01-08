@@ -8,9 +8,11 @@ export const Hero = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-b from-blue-50 to-white">
       <div className="text-center max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-6xl font-bold text-primary mb-6 animate-float">
-          <span className="block">Learn. Teach.</span>
-          <span className="block">Exchange Knowledge.</span>
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-float">
+          <span className="block text-primary">Learn. Teach.</span>
+          <span className="block bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Exchange Knowledge.
+          </span>
         </h1>
         <p className="text-xl text-gray-600 mb-8">
           A global platform for sharing knowledge
