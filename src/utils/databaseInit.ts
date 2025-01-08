@@ -7,18 +7,29 @@ export const initializeDatabase = async () => {
     const { error: createTableError } = await supabase.from('lessons').select('*').limit(1);
 
     if (createTableError?.message?.includes('relation "public.lessons" does not exist')) {
-      const { error: sqlError } = await supabase.sql`
-        CREATE TABLE IF NOT EXISTS public.lessons (
-          id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-          title TEXT NOT NULL,
-          category TEXT NOT NULL,
-          description TEXT NOT NULL,
-          skill_level TEXT NOT NULL,
-          price TEXT NOT NULL,
-          teacher_id UUID NOT NULL,
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
-        );
-      `;
+      const { error: sqlError } = await supabase
+        .from('lessons')
+        .select('*')
+        .limit(1)
+        .single()
+        .then(async () => {
+          return { error: null };
+        })
+        .catch(async () => {
+          // Table doesn't exist, create it
+          return await supabase.query(`
+            CREATE TABLE IF NOT EXISTS public.lessons (
+              id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+              title TEXT NOT NULL,
+              category TEXT NOT NULL,
+              description TEXT NOT NULL,
+              skill_level TEXT NOT NULL,
+              price TEXT NOT NULL,
+              teacher_id UUID NOT NULL,
+              created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+            );
+          `);
+        });
 
       if (sqlError) {
         console.error('Error creating table:', sqlError);
@@ -30,20 +41,40 @@ export const initializeDatabase = async () => {
         return false;
       }
 
-      // Create a sample lesson to initialize the table
-      const { error: insertError } = await supabase
-        .from('lessons')
-        .insert({
-          title: 'Welcome to Skill Share',
-          category: 'programming',
-          description: 'This is a sample lesson to help you get started.',
+      // Create sample lessons to initialize the table
+      const sampleLessons = [
+        {
+          title: 'Introduction to Spanish',
+          category: 'languages',
+          description: 'Learn the basics of Spanish language including greetings, numbers, and essential phrases.',
           skill_level: 'Beginner',
           price: 'Free',
           teacher_id: '00000000-0000-0000-0000-000000000000'
-        });
+        },
+        {
+          title: 'Guitar for Beginners',
+          category: 'music',
+          description: 'Start your musical journey with basic guitar chords and strumming patterns.',
+          skill_level: 'Beginner',
+          price: 'Barter',
+          teacher_id: '00000000-0000-0000-0000-000000000000'
+        },
+        {
+          title: 'Advanced JavaScript Patterns',
+          category: 'programming',
+          description: 'Deep dive into advanced JavaScript concepts including closures, prototypes, and design patterns.',
+          skill_level: 'Advanced',
+          price: '0.001 ETH',
+          teacher_id: '00000000-0000-0000-0000-000000000000'
+        }
+      ];
+
+      const { error: insertError } = await supabase
+        .from('lessons')
+        .insert(sampleLessons);
 
       if (insertError) {
-        console.error('Error inserting sample lesson:', insertError);
+        console.error('Error inserting sample lessons:', insertError);
         toast({
           variant: "destructive",
           title: "Database Error",
