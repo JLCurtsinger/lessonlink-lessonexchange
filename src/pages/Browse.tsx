@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LessonCard, type Lesson } from "@/components/LessonCard";
-import Navigation from "@/components/Navigation";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import { initializeDatabase } from "@/utils/databaseInit";
@@ -55,7 +54,6 @@ const Browse = () => {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <div className="container py-8">
         <h1 className="text-4xl font-bold mb-8">Browse Lessons</h1>
         

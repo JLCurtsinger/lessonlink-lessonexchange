@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/browse" element={<Browse />} />
-          <Route path="/create" element={<CreateLesson />} />
+          <Route path="/create-lesson" element={<CreateLesson />} />
           <Route path="/lesson/:id" element={<LessonDetails />} />
           <Route path="/auth" element={<Auth />} />
         </Routes>
