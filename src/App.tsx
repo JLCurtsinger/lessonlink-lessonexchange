@@ -7,6 +7,7 @@ import CreateLesson from "./pages/CreateLesson";
 import LessonDetails from "./pages/LessonDetails";
 import Auth from "./pages/Auth";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import { Toaster } from "./components/ui/toaster";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/lesson/:id" element={<LessonDetails />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
         <Footer />
