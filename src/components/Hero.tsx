@@ -36,11 +36,22 @@ export const Hero = () => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mt-12">
-          <FeatureCard
-            icon={<Globe className="w-8 h-8 text-primary" />}
-            title="Teach Skills Globally"
-            description="Share your expertise with students worldwide through our platform."
-          />
+          <div 
+            className="p-6 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+            onClick={() => navigate("/teach")}
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4">
+                <Globe className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                Teach Skills Globally
+              </h3>
+              <p className="text-gray-600">
+                Share your expertise with students worldwide through our platform.
+              </p>
+            </div>
+          </div>
           <FeatureCard
             icon={<BookOpen className="w-8 h-8 text-primary" />}
             title="Learn Anything You Love"
