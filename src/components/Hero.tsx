@@ -52,11 +52,22 @@ export const Hero = () => {
               </p>
             </div>
           </div>
-          <FeatureCard
-            icon={<BookOpen className="w-8 h-8 text-primary" />}
-            title="Learn Anything You Love"
-            description="Explore diverse lessons from experienced instructors."
-          />
+          <div 
+            className="p-6 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+            onClick={() => navigate("/learn")}
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4">
+                <BookOpen className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                Learn Anything You Love
+              </h3>
+              <p className="text-gray-600">
+                Explore diverse lessons from experienced instructors.
+              </p>
+            </div>
+          </div>
           <FeatureCard
             icon={<Bitcoin className="w-8 h-8 text-primary" />}
             title="Flexible Payment Options"
