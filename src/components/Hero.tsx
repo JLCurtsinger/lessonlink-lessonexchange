@@ -68,31 +68,24 @@ export const Hero = () => {
               </p>
             </div>
           </div>
-          <FeatureCard
-            icon={<Bitcoin className="w-8 h-8 text-primary" />}
-            title="Flexible Payment Options"
-            description="Choose between free lessons, barter, or cryptocurrency payments."
-          />
+          <div 
+            className="p-6 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+            onClick={() => navigate("/flexible-payments")}
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4">
+                <Bitcoin className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                Flexible Payment Options
+              </h3>
+              <p className="text-gray-600">
+                Choose between free lessons, barter, or cryptocurrency payments.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-const FeatureCard = ({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) => (
-  <div className="p-6 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-    <div className="flex flex-col items-center text-center">
-      <div className="mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold mb-2 text-gray-800">{title}</h3>
-      <p className="text-gray-600">{description}</p>
-    </div>
-  </div>
-);

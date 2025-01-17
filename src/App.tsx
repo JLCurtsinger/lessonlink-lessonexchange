@@ -12,6 +12,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import TeachSkills from "./pages/TeachSkills";
 import Learn from "./pages/Learn";
+import FlexiblePayments from "./pages/FlexiblePayments";
 import { Toaster } from "./components/ui/toaster";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/teach" element={<TeachSkills />} />
             <Route path="/learn" element={<Learn />} />
+            <Route path="/flexible-payments" element={<FlexiblePayments />} />
           </Routes>
         </main>
         <Footer />
