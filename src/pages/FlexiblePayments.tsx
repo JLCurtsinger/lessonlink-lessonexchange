@@ -6,7 +6,7 @@ const FlexiblePayments = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-32 mb-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <div className="container mx-auto px-4 py-12">
         {/* Introduction Section */}
         <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8 text-center">
@@ -101,7 +101,6 @@ const FlexiblePayments = () => {
             Explore Lessons
           </Button>
         </section>
-
       </div>
     </div>
   );
