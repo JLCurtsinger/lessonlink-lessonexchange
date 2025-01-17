@@ -6,7 +6,7 @@ const FlexiblePayments = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-16">
       <div className="container mx-auto px-4 py-12">
         {/* Introduction Section */}
         <h1 className="text-4xl md:text-5xl font-bold text-primary mb-8 text-center">
