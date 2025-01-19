@@ -40,6 +40,14 @@ const Footer = () => {
         </div>
         <div className="text-center pt-4 border-t border-primary-foreground/20">
           <p className="text-sm">© 2025 Lesson Link. All Rights Reserved.</p>
+          <a 
+            href="https://talklikealocal.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm inline-block mt-2 bg-gradient-to-r from-[#4338FF] to-[#8C1AFF] bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+          >
+            TalkLikeALocal.org
+          </a>
         </div>
       </div>
     </footer>
