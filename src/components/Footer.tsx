@@ -6,34 +6,34 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-primary text-primary-foreground mt-auto">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-center">
+    <footer className="bg-primary text-primary-foreground mt-16">
+      <div className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 text-center">
           <Link 
             to="/about"
             onClick={scrollToTop}
-            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors"
+            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors py-1"
           >
             About Us
           </Link>
           <Link 
             to="/contact"
             onClick={scrollToTop}
-            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors"
+            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors py-1"
           >
             Contact
           </Link>
           <Link 
             to="/privacy"
             onClick={scrollToTop}
-            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors"
+            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors py-1"
           >
             Privacy Policy
           </Link>
           <Link 
             to="/terms"
             onClick={scrollToTop}
-            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors"
+            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors py-1"
           >
             Terms of Service
           </Link>
