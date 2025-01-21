@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground mt-16">
       <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 mb-6 text-center">
           <Link 
             to="/about"
             onClick={scrollToTop}
@@ -23,6 +23,14 @@ const Footer = () => {
           >
             Contact
           </Link>
+          <a 
+            href="https://talklikealocal.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary-foreground hover:text-primary-foreground/80 transition-colors py-1"
+          >
+            TalkLikeALocal.org
+          </a>
           <Link 
             to="/privacy"
             onClick={scrollToTop}
@@ -39,15 +47,17 @@ const Footer = () => {
           </Link>
         </div>
         <div className="text-center pt-4 border-t border-primary-foreground/20">
-          <p className="text-sm">© 2025 Lesson Link. All Rights Reserved.</p>
-          <a 
-            href="https://talklikealocal.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm inline-block mt-2 bg-gradient-to-r from-[#4338FF] to-[#8C1AFF] bg-clip-text text-transparent hover:opacity-80 transition-opacity"
-          >
-            TalkLikeALocal.org
-          </a>
+          <p className="text-sm">
+            © 2025 Lesson Link, All Rights Reserved |{" "}
+            <a 
+              href="https://elev8.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary-foreground/80 transition-colors"
+            >
+              Produced by Elev8.dev
+            </a>
+          </p>
         </div>
       </div>
     </footer>
